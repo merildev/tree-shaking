@@ -11,7 +11,7 @@ module.exports = {
     path: resolve(process.cwd(), 'dist')
   },
   resolve: {
-    extensions: ['.tsx', '.ts', '.js', '.jsx']
+    extensions: ['.js']
   },
   mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
   module: {
