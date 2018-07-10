@@ -2,10 +2,10 @@
   "name": "tree-shaking",
   "version": "1.0.0",
   "description": "Dummy project to test tree-shaking",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "analyze": "NODE_ENV=production ANALYZE=true webpack",
-    "start": "webpack"
+    "start": "webpack-dev-server"
   },
   "author": "",
   "license": "ISC",
@@ -22,9 +22,13 @@
     "rxjs": "^6.2.1",
     "webpack": "^4.15.1",
     "webpack-bundle-analyzer": "^2.13.1",
-    "webpack-cli": "^3.0.8"
+    "webpack-cli": "^3.0.8",
+    "webpack-dev-server": "^3.1.4"
   },
   "dependencies": {
+    "file-loader": "^1.1.11",
+    "polished": "^1.9.3",
+    "ramda": "^0.25.0",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
     "styled-components": "^3.3.3"

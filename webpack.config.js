@@ -7,8 +7,9 @@ module.exports = {
     app: './src/index.js'
   },
   output: {
-    filename: '[name].js',
-    path: resolve(process.cwd(), 'dist')
+    filename: 'bundle.js',
+    path: resolve(process.cwd(), 'dist'),
+    publicPath: 'assets/',
   },
   resolve: {
     extensions: ['.js']
@@ -19,7 +20,12 @@ module.exports = {
       {
         test: /\.(js)$/,
         loader: 'babel-loader',
-        exclude: /node_modules/
+        exclude: /[/\\\\]node_modules[/\\\\]/,
+      },
+      {
+        include: /[/\\\\]blockchain-info-components[/\\\\]/,
+        test: /\.(eot|ttf|otf|woff|woff2|svg)$/,
+        loader: 'file-loader',
       }
     ]
   },
@@ -32,9 +38,11 @@ module.exports = {
 
     new webpack.optimize.ModuleConcatenationPlugin(),
 
-    new BundleAnalyzerPlugin({
-      analyzerMode: 'static',
-      reportFilename: './report.html'
-    })
-  ]
+    process.env.ANALYZE
+      ? new BundleAnalyzerPlugin({
+        analyzerMode: 'static',
+        reportFilename: './report.html'
+      })
+      : null
+  ].filter(Boolean)
 }
