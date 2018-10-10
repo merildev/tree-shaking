@@ -1,48 +1,36 @@
-const { resolve } = require('path')
 const webpack = require('webpack')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
+process.env.NODE_ENV = 'production'
+
 module.exports = {
-  entry: {
-    app: './src/index.js'
+  "mode": "production",
+  "entry": "./src/index.js",
+  "output": {
+    "path": __dirname+'/static',
+    "filename": "[name].[chunkhash:8].js"
   },
-  output: {
-    filename: 'bundle.js',
-    path: resolve(process.cwd(), 'dist'),
-    publicPath: 'assets/',
-  },
-  resolve: {
-    extensions: ['.js']
-  },
-  mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
-  module: {
-    rules: [
+  "module": {
+    "rules": [
       {
-        test: /\.(js)$/,
-        loader: 'babel-loader',
-        exclude: /[/\\\\]node_modules[/\\\\]/,
-      },
-      {
-        include: /[/\\\\]blockchain-info-components[/\\\\]/,
-        test: /\.(eot|ttf|otf|woff|woff2|svg)$/,
-        loader: 'file-loader',
+        exclude: [/[/\\\\]node_modules[/\\\\]/],
+        include: /src/,
+        test: /\.js$/,
+        use: [
+          {
+            loader: `babel-loader?cacheDirectory=${false}`,
+          }
+        ],
       }
     ]
   },
+  optimization: {
+    concatenateModules: false
+  },
   plugins: [
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
-    }),
-
-    new webpack.HashedModuleIdsPlugin(),
-
-    new webpack.optimize.ModuleConcatenationPlugin(),
-
-    process.env.ANALYZE
-      ? new BundleAnalyzerPlugin({
-        analyzerMode: 'static',
-        reportFilename: './report.html'
-      })
-      : null
-  ].filter(Boolean)
+    new BundleAnalyzerPlugin({
+      analyzerMode: 'static',
+      reportFilename: './report.html'
+    })
+  ]
 }
